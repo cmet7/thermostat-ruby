@@ -3,7 +3,7 @@
 require 'statemachine'
 require './relays.rb'
 require './thermostat.rb'
-require './ThermostatContext.rb'
+require './thermostatcontext.rb'
 
 RELAYS = Relays.new
 THERMOSTAT = Thermostat.new
