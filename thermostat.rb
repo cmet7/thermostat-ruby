@@ -1,10 +1,10 @@
 class Thermostat
 	attr_accessor :cool_temp, :heat_temp
-	DIFFERENTIAL = 3.0
+	DIFFERENTIAL = 2.0
 
 	def initialize
-		@cool_temp = 78.0
-		@heat_temp = 68.0
+		@cool_temp = 99.0
+		@heat_temp = 72.0
 		@t = Statemachine.build do 
     	state :idle do
     		event :too_hot, :cooling
