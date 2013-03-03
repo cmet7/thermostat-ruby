@@ -16,8 +16,7 @@ class ThermostatContext
 			RELAYS.heat = false
 		end
 		puts "Starting 15 second fan period"
-		# sleep(15)
-		sleep(2)
+		sleep(15)
 		RELAYS.fan = false
 		puts "Turned fan off."
 	end
@@ -36,9 +35,8 @@ class ThermostatContext
 	def long_wait
 		puts "Tried to switch from heat to cool or cool to heat."
 		puts "This should never happen, so we will wait 3 minutes and hope the conditions stabilize"
-		# sleep(300)
+		sleep(300)
 		end_conditioning
-		sleep(3)
 	end
 end
 
