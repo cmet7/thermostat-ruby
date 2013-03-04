@@ -1,13 +1,9 @@
 class Thermostat
 	attr_reader :cool_temp, :heat_temp, :differential, :cooling, :heating, :fan, :t
 
-	def initialize
-		@cool_temp = 78.0
-		@heat_temp = 72.0
-	  @differential = 2.0
-    @cooling = true
-    @heating = true
-    @fan = false
+	def initialize mutex
+    @mutex = mutex
+    load_yaml
 
 		@t = Statemachine.build do 
     	state :idle do
@@ -81,8 +77,27 @@ class Thermostat
     end
   end
 
-  def config_change
+  def clock
+    load_yaml
     @t.clock
+  end
+
+  def config_change
+    load_yaml
+    @t.clock
+  end
+
+  def load_yaml
+    @mutex.synchronize do
+      config_file = YAML.load_file(File.join(File.dirname(__FILE__), "settings.yaml"))
+
+      @cool_temp = config_file["cool_temp"]
+      @heat_temp = config_file["heat_temp"]
+      @differential = config_file["differential"]
+      @cooling = config_file["cooling"]
+      @heating = config_file["heating"]
+      @fan = config_file["fan"]
+    end
   end
 
 	private

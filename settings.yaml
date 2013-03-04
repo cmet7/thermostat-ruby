@@ -1,0 +1,6 @@
+cool_temp: 78.0
+heat_temp: 72.0
+differential: 2.0
+cooling: true
+heating: true
+fan: false
