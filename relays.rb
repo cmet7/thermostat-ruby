@@ -27,7 +27,7 @@ class Relays
 	def set_relay(relay, val)
 		puts "Setting relay"
 		value = val ? 1 : 0	
-		`echo "#{value}" > /sys/class/gpio/gpio#{PINS[relay]}/value`
+	#	`echo "#{value}" > /sys/class/gpio/gpio#{PINS[relay]}/value`
 		puts "echo \"#{value}\" > /sys/class/gpio/gpio#{PINS[relay]}/value"
 	end
 
