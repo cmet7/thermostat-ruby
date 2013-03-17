@@ -1,0 +1,10 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    statemachine (2.2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  statemachine
