@@ -1,6 +1,15 @@
 class ThermostatContext
 
-  attr_accessor :statemachine
+  attr_accessor :statemachine, :heat_temp, :cool_temp, :differential, :cooling, :heating, :fan
+
+  def set_heat_temp temp
+    if (temp + @differential) < @cool_temp
+      @thermostat.set_heat_temp = temp
+      return true
+    else
+      return false
+    end
+  end
 
 	def start_cooling
 		puts "Starting cooling and fan."
@@ -55,28 +64,28 @@ class ThermostatContext
 	end
 
   def cooling_decision
-    cool_temp = THERMOSTAT.cool_temp
-    differential = THERMOSTAT.differential
-    cooling_enabled = THERMOSTAT.cooling
+    cool_temp = @cool_temp
+    differential = @differential
+    cooling_enabled = @cooling
     reading = SENSOR.reading
 
     @statemachine.end_cooling unless cooling_enabled && (reading > cool_temp - differential)
   end
 
   def heating_decision
-    heat_temp = THERMOSTAT.heat_temp
-    differential = THERMOSTAT.differential
-    heating_enabled = THERMOSTAT.heating
+    heat_temp = @heat_temp
+    differential = @differential
+    heating_enabled = @heating
     reading = SENSOR.reading
 
     @statemachine.end_heating unless heating_enabled && (reading < heat_temp + differential)
   end
 
   def idle_or_fan_decision
-    heat_temp = THERMOSTAT.heat_temp
-    cool_temp = THERMOSTAT.cool_temp
-    heating_enabled = THERMOSTAT.heating
-    cooling_enabled = THERMOSTAT.cooling
+    heat_temp = @heat_temp
+    cool_temp = @cool_temp
+    heating_enabled = @heating
+    cooling_enabled = @cooling
     reading = SENSOR.reading
 
     
@@ -90,11 +99,11 @@ class ThermostatContext
   end
 
   def mode_decision
-    heat_temp = THERMOSTAT.heat_temp
-    cool_temp = THERMOSTAT.cool_temp
-    heating_enabled = THERMOSTAT.heating
-    cooling_enabled = THERMOSTAT.cooling
-    fan_enabled = THERMOSTAT.fan
+    heat_temp = @heat_temp
+    cool_temp = @cool_temp
+    heating_enabled = @heating
+    cooling_enabled = @cooling
+    fan_enabled = @fan
     reading = SENSOR.reading
     if cooling_enabled && reading > cool_temp
       puts "Had to start cooling"
