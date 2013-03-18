@@ -16,13 +16,24 @@ module Thermostat
         begin
           Logger.log "Server initialized, pid #{Process.pid.to_s}"
           write_pid
+
+          # Trap SIGTERM to log shutdown message
           trap(:SIGTERM) do
             Logger.log "Received SIGTERM, shutting down"
             exit(0)
           end
-          while true
-            sleep 10
+
+          # Trap SIGUSR1 to clock statemachine
+          trap(:USR1) do
+            # clock statemachine
+            Logger.log Settings.get_settings.inspect
           end
+
+          while true
+            # clock statemachine
+            sleep 1
+          end
+
         rescue Exception => e
           Logger.log_exception(e)
         end
@@ -61,6 +72,10 @@ module Thermostat
     rescue Errno::EEXIST
       check_pid!
       retry
+    end
+
+    def check_socket!
+      
     end
 
   end # Server
