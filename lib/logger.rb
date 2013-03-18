@@ -6,6 +6,7 @@ module Thermostat
     def self.log message
       $stderr.puts message
       @@log_file.puts "[#{Time.now}] #{message}"
+      @@log_file.flush
     end
 
     def self.error_log message
