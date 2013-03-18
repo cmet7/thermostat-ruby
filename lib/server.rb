@@ -9,22 +9,25 @@ module Thermostat
 
     def start
       check_pid!
+      at_exit { Logger.log "Server stopped. (PID: #{Process.pid.to_s})" }
+
+
       if Process.daemon
         begin
-          Thermostat::Logger.log "Server initialized, pid #{Process.pid.to_s}"
+          Logger.log "Server initialized, pid #{Process.pid.to_s}"
           write_pid
           trap(:SIGTERM) do
-            Thermostat::Logger.log "Received SIGTERM, shutting down"
+            Logger.log "Received SIGTERM, shutting down"
             exit(0)
           end
           while true
             sleep 10
           end
         rescue Exception => e
-          Thermostat::Logger.log_exception(e)
+          Logger.log_exception(e)
         end
       else # can't daemonize
-        Thermostat::Logger.error_log "Unable to daemonize process"
+        Logger.error_log "Unable to daemonize process"
       end
     end
 
@@ -33,7 +36,7 @@ module Thermostat
     def check_pid!
       case pidfile_process_status
       when :running, :not_owned
-        Thermostat::Logger.error_log "Tried to start server; It's already running. Check #{@pid_filename}."
+        Logger.error_log "Tried to start server; It's already running. Check #{@pid_filename}."
         exit(1)
       when :dead
         ::File.delete(@pid_filename)
