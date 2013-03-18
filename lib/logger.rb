@@ -12,6 +12,10 @@ module Thermostat
     def self.error_log message
       self.log "ERROR: #{message}"
     end
+
+    def self.log_exception e
+      self.log "#{e.to_s}\n\t#{e.backtrace.join("\n\t")}"
+    end
     
   end
   
