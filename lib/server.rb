@@ -11,6 +11,11 @@ module Thermostat
       if Process.daemon
         Thermostat::Logger.log "Server initialized, pid #{Process.pid.to_s}"
         check_pid!
+        write_pid
+        trap(:SIGTERM) { Thermostat::Logger.log "Received SIGTERM, shutting down" }
+        while true
+          sleep 10
+        end
       else # can't daemonize
         Thermostat::Logger.error_log "Unable to daemonize process"
       end
@@ -21,7 +26,7 @@ module Thermostat
     def check_pid!
       case pidfile_process_status
       when :running, :not_owned
-        Thermostat::Logger.error_log "A server is already running. Check #{@pid_file}."
+        Thermostat::Logger.error_log "A server is already running. Check #{@pid_filename}."
         exit(1)
       when :dead
         ::File.delete(@pid_filename)
@@ -38,6 +43,14 @@ module Thermostat
       :dead
     rescue Errno::EPERM
       :not_owned
+    end
+
+    def write_pid
+      ::File.open(@pid_filename, ::File::CREAT | ::File::EXCL | ::File::WRONLY ) { |f| f.write("#{Process.pid}") }
+      at_exit { ::File.delete(@pid_filename) if ::File.exist?(@pid_filename) }
+    rescue Errno::EEXIST
+      check_pid!
+      retry
     end
 
   end # Server
