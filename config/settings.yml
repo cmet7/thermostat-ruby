@@ -1,3 +1,6 @@
+cooling_enabled: true
+heating_enabled: true
+fan_enabled: true
 heat_temp: 68.0
 cool_temp: 78.0
 differential: 3.0
