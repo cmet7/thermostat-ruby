@@ -17,6 +17,9 @@ module Thermostat
           Logger.log "Server initialized, pid #{Process.pid.to_s}"
           write_pid
 
+          # Start state machine
+          @machine = Thermostat.new
+
           # Trap SIGTERM to log shutdown message
           trap(:SIGTERM) do
             Logger.log "Received SIGTERM, shutting down"
@@ -26,7 +29,14 @@ module Thermostat
           # Trap SIGUSR1 to clock statemachine
           trap(:USR1) do
             # clock statemachine
+            Logger.log "Clocking statemachine"
+            @machine.clock
+            Logger.log "After clocking: #{@machine.inspect}"
+          end
+
+          trap :USR2 do
             Logger.log Settings.get_settings.inspect
+            Logger.log @machine.inspect
           end
 
           while true
