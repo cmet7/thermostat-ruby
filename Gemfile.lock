@@ -1,10 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    eventmachine (1.0.3)
     statemachine (2.2.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  eventmachine
   statemachine

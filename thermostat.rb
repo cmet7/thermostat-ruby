@@ -8,5 +8,6 @@ require "lib/relays.rb"
 require "lib/thermostat.rb"
 require "lib/thermostatcontext.rb"
 require "lib/sensor.rb"
+require "lib/socket_server.rb"
 
 Thermostat::Server.new

@@ -20,6 +20,9 @@ module Thermostat
           # Start state machine
           @machine = Thermostat.new
 
+          # Start listening on socket
+          Logger.log "Starting socket server. (PID: #{SocketServer.new})"
+
           # Trap SIGTERM to log shutdown message
           trap(:SIGTERM) do
             Logger.log "Received SIGTERM, shutting down"
